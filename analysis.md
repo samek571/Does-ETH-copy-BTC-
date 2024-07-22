@@ -18,15 +18,33 @@ Does Ethereum only copy bitcoin?
 Or on the other hand, does it have its own drive and people differ ethereum from bitcoin and buy each independently?
 
 
-## Procedure
+## Preparation
 The fisrt thing i did was to gather data, there is a [blockchair](https://blockchair.com) which provided me with historical prices of both coins in ".tsv" format. $\\$
 Using python I parsed the data and thanks to wide range libraries, analysis was made easy - I used Engle-Granger 2step cointegration test which consists of regressing ETH to BTC and testing residuals by ADF, of course the daily average trading prices (data) have been normalized beforehand. $\\$
 Bitcoin is older than Ethereum so I decided to just cut its leading trail and measure from the same point in history which is 30.7 in 2015 - the launch of Ethereum.
 
 There are many models i could have used instead, each and every one of them is bad, however some actually tells us more relevant information than others. Engle-Granger was (in my opinion and knowledge) the most suitable one.
 
+Lets dig deeper:
+## Procedure
+The **Engle-Granger test** is generally used to determine whether two (or more) time series are cointegrated - they share a long-term equilibrium relationship despite being non-stationary on their own. $\\$
+Steps we take are simple enough, firstly we regress all time series onto one we choose as pivot (Ethereum are regressed onto Bitcoin prices in this case). We have obtained a residual on which we can do the second step, which is apply Augmented Dickey-Fuller (ADF) test to check for statioinary.
+
+$\\$
+
+The **ADF test** is a statistical test that determines whether a given time series are stationary. We either deny or confirm the H0 we stated at the beggining depending on the result of the test, in this particular example, showing that the residuals of the regression between two cryptocurrencies are stationary means cointegration, indicating a longterm equilibrium.
+1. Firstly the **ADF statistics** explained: If we dispone a negative value that more significantly diverges from zero suggests stronger evidence against the null hypothesis of a unit root.
+2. Secondly **p-value**: assuming H0 holds true, it is an indication of how well is the sationary supported (typically and so in this project ) p < 0.05 leads to rejecting the null hypothesis.
+3. Lastly **critical values** are thresholds at which ADF would lead to rejecting the H0 at different severity levels (in this case 1%, 3%, and 10%).
+
+$\\$
+## Assumptions
+1. **linear relationship** inbetween both coins.
+2. existence of *only* **single equation** (involving a constant term and a stochastic term) is sufficient to model out the relationship accurately.
+3. **variable order** variable can be regressed on the other without prior determination of dependence direction, which could affect the interpretation if the wrong variable is chosen as independent.
+
 ## Results
-I think the result inst that shocking, based on this data we can confidently say that ethereum isnt as self sustainable despite the technology it possesses in comparison to Bitcoin. Down below there is a graph of normalized prices of both coins and a result from the python code.
+I think the result ins't that shocking, based on this data we can confidently say that ethereum isn't as self-sustainable despite the technology it possesses in comparison to Bitcoin. Down below there is a graph of normalized prices of both coins and a result from the python code.
 
 ![image](graph.png)
 
